@@ -5,6 +5,7 @@ import com.blubito.phonebook.dbo.ContactDbo;
 import com.blubito.phonebook.dbo.PhonenumberDbo;
 import com.blubito.phonebook.dto.FullDetailsDto;
 import com.blubito.phonebook.exception.ArgumentNotFoundException;
+import com.blubito.phonebook.exception.MissingInputException;
 import com.blubito.phonebook.repository.ContactRepository;
 import com.blubito.phonebook.repository.PhonenumberRepository;
 import org.slf4j.Logger;
@@ -78,6 +79,10 @@ public class ContactServiceImpl implements ContactService {
         log.info("Invoked method createContact");
 
         try {
+
+            if (fullDetailsDto.getFirstname() == null || fullDetailsDto.getLastname() == null) {
+                throw new MissingInputException();
+            }
             ContactDbo contactDbo = new ContactDbo(fullDetailsDto.getFirstname(), fullDetailsDto.getLastname());
             contactRepository.save(contactDbo);
 
