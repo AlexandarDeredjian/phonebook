@@ -36,10 +36,14 @@ public class ContactController {
         return contactService.findNumberById(id);
     }
 
-
     @PostMapping("/createContact")
     public FullDetailsDto createContact(@RequestBody FullDetailsDto fullDetailsDto) {
         return contactService.createContact(fullDetailsDto);
+    }
+
+    @PostMapping("/addNumberToExistingContact")
+    public FullDetailsDto addNumberToExistingContact(@RequestBody FullDetailsDto fullDetailsDto) {
+        return contactService.addNumberToExistingContact(fullDetailsDto);
     }
 
     @DeleteMapping("/deleteAll")

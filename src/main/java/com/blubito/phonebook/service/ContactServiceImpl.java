@@ -66,6 +66,19 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    public FullDetailsDto addNumberToExistingContact(FullDetailsDto fullDetailsDto) {
+        if(contactRepository.existsById(fullDetailsDto.getId())){
+            PhonenumberDbo phonenumberDbo = new PhonenumberDbo();
+            phonenumberDbo.setPhoneNumber(fullDetailsDto.getPhoneNumber());
+            phonenumberDbo.setNumberType(fullDetailsDto.getNumberType());
+            phonenumberDbo.setContact_id(fullDetailsDto.getId());
+            phonenumberRepository.save(phonenumberDbo);
+        }
+
+        return fullDetailsDto;
+    }
+
+    @Override
     public void deleteAll() {
         log.info("Invoked method deleteAll");
         contactRepository.deleteAll();

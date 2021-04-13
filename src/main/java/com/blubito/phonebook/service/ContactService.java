@@ -3,6 +3,7 @@ package com.blubito.phonebook.service;
 import com.blubito.phonebook.dbo.ContactDbo;
 import com.blubito.phonebook.dbo.PhonenumberDbo;
 import com.blubito.phonebook.dto.FullDetailsDto;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
@@ -17,6 +18,8 @@ public interface ContactService {
     Optional<PhonenumberDbo> findNumberById(Integer id);
 
     FullDetailsDto createContact(FullDetailsDto fullDetailsDto);
+
+    FullDetailsDto addNumberToExistingContact(FullDetailsDto fullDetailsDto);
 
     void deleteAll();
 
