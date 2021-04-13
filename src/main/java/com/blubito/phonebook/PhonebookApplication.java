@@ -13,6 +13,4 @@ public class PhonebookApplication {
 		SpringApplication.run(PhonebookApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner commandLineRunner(ContactRepository contactRepository){return args -> {};}
 }
