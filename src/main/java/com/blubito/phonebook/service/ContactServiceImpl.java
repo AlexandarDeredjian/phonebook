@@ -6,6 +6,7 @@ import com.blubito.phonebook.dbo.PhonenumberDbo;
 import com.blubito.phonebook.dto.FullDetailsDto;
 import com.blubito.phonebook.exception.ArgumentNotFoundException;
 import com.blubito.phonebook.exception.MissingInputException;
+import com.blubito.phonebook.exception.DuplicatePhoneNumberException;
 import com.blubito.phonebook.repository.ContactRepository;
 import com.blubito.phonebook.repository.PhonenumberRepository;
 import org.slf4j.Logger;
@@ -78,6 +79,10 @@ public class ContactServiceImpl implements ContactService {
     public FullDetailsDto createContact(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method createContact");
 
+        if(phonenumberRepository.findAllPhoneNumbers().contains(fullDetailsDto.getPhoneNumber())){
+            throw new DuplicatePhoneNumberException();
+        }
+
         try {
 
             if (fullDetailsDto.getFirstname() == null || fullDetailsDto.getLastname() == null) {
@@ -110,6 +115,13 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public FullDetailsDto addNumberToExistingContact(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method addNumberToExistingContact");
+
+        Optional<PhonenumberDbo> byId = phonenumberRepository.findById(fullDetailsDto.getId());
+        if(byId.isPresent() && byId.get().getNumberType().equals(fullDetailsDto.getNumberType())){
+            byId.get().setPhoneNumber(fullDetailsDto.getPhoneNumber());
+            phonenumberRepository.save(byId.get());
+            return fullDetailsDto;
+        }
 
         try {
             if (contactRepository.existsById(fullDetailsDto.getId())) {
