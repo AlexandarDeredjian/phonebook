@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhonenumberDbo {
+public class PhoneNumberDbo {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

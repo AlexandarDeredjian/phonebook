@@ -1,9 +1,10 @@
 package com.blubito.phonebook.controller;
 
 import com.blubito.phonebook.dbo.ContactDbo;
-import com.blubito.phonebook.dbo.PhonenumberDbo;
+import com.blubito.phonebook.dbo.PhoneNumberDbo;
 import com.blubito.phonebook.dto.FullDetailsDto;
 import com.blubito.phonebook.service.ContactService;
+import com.blubito.phonebook.service.PhoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +17,17 @@ public class ContactController {
     @Autowired
     ContactService contactService;
 
+    @Autowired
+    PhoneNumberService phoneNumberService;
+
     @GetMapping("/allContacts")
     public Iterable<ContactDbo> getAllContacts() {
         return contactService.getAllContacts();
     }
 
     @GetMapping("/allNumbers")
-    public Iterable<PhonenumberDbo> getAllNumbers() {
-        return contactService.getAllNumbers();
+    public Iterable<PhoneNumberDbo> getAllNumbers() {
+        return phoneNumberService.getAllNumbers();
     }
 
     @GetMapping("/findContactById/{id}")
@@ -32,8 +36,8 @@ public class ContactController {
     }
 
     @GetMapping("/findNumberById/{id}")
-    public Optional<PhonenumberDbo> findNumberById(@PathVariable Integer id) {
-        return contactService.findNumberById(id);
+    public Optional<PhoneNumberDbo> findNumberById(@PathVariable Integer id) {
+        return phoneNumberService.findNumberById(id);
     }
 
     @PostMapping("/createContact")
@@ -43,7 +47,7 @@ public class ContactController {
 
     @PostMapping("/addNumberToExistingContact")
     public FullDetailsDto addNumberToExistingContact(@RequestBody FullDetailsDto fullDetailsDto) {
-        return contactService.addNumberToExistingContact(fullDetailsDto);
+        return phoneNumberService.addNumberToExistingContact(fullDetailsDto);
     }
 
     @DeleteMapping("/deleteAll")
@@ -58,7 +62,7 @@ public class ContactController {
 
     @DeleteMapping("/deleteNumberById/{id}")
     public void deleteNumberById(@PathVariable Integer id) {
-        contactService.deleteNumberById(id);
+        phoneNumberService.deleteNumberById(id);
     }
 
     @PutMapping("/updateName")
@@ -67,7 +71,7 @@ public class ContactController {
     }
 
     @PutMapping("/updateNumber")
-    public Optional<PhonenumberDbo> updateNumber(@RequestBody FullDetailsDto fullDetailsDto) {
-        return contactService.updateNumber(fullDetailsDto);
+    public Optional<PhoneNumberDbo> updateNumber(@RequestBody FullDetailsDto fullDetailsDto) {
+        return phoneNumberService.updateNumber(fullDetailsDto);
     }
 }
