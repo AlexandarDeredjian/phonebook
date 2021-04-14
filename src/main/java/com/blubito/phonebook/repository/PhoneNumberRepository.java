@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface PhoneNumberRepository extends JpaRepository<PhoneNumberDbo,Integer> {
 
-    @Query(value = "SELECT phonenumber FROM PHONENUMBER;", nativeQuery = true)
+    @Query(value = "SELECT PHONENUMBER FROM PHONENUMBER;", nativeQuery = true)
     List<String> findAllPhoneNumbers();
 
 }

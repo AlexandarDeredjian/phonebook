@@ -21,7 +21,7 @@ public class ContactController {
     }
 
     @GetMapping("/findContactById/{id}")
-    public Optional<ContactDbo> findContactById(@PathVariable Integer id) {
+    public ContactDbo findContactById(@PathVariable Integer id) {
         return contactService.findContactById(id);
     }
 

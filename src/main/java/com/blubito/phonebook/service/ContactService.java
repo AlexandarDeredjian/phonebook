@@ -9,7 +9,7 @@ public interface ContactService {
 
     Iterable<ContactDbo> getAllContacts();
 
-    Optional<ContactDbo> findContactById(Integer id);
+    ContactDbo findContactById(Integer id);
 
     FullDetailsDto createContact(FullDetailsDto fullDetailsDto);
 
