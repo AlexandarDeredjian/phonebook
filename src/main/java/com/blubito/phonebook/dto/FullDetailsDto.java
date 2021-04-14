@@ -1,10 +1,7 @@
 package com.blubito.phonebook.dto;
 
 import com.blubito.phonebook.types.NumberType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -16,6 +13,4 @@ public class FullDetailsDto {
     private String lastname;
     private String phoneNumber;
     private NumberType numberType;
-
-
 }

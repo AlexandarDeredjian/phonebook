@@ -1,8 +1,6 @@
 package com.blubito.phonebook.dbo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,7 +8,9 @@ import javax.persistence.*;
 @Table(name ="contact")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ContactDbo {
 
     @Id
@@ -24,8 +24,4 @@ public class ContactDbo {
     @Column(name = "lastname")
     private String lastname;
 
-    public ContactDbo(String firstname, String lastname) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-    }
 }

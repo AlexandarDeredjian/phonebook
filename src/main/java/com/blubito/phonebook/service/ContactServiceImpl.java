@@ -32,7 +32,7 @@ public class ContactServiceImpl implements ContactService {
         try {
             return contactRepository.findAll();
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -42,7 +42,7 @@ public class ContactServiceImpl implements ContactService {
         try {
             return phonenumberRepository.findAll();
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -83,18 +83,26 @@ public class ContactServiceImpl implements ContactService {
             if (fullDetailsDto.getFirstname() == null || fullDetailsDto.getLastname() == null) {
                 throw new MissingInputException();
             }
-            ContactDbo contactDbo = new ContactDbo(fullDetailsDto.getFirstname(), fullDetailsDto.getLastname());
+
+            ContactDbo contactDbo = ContactDbo.builder()
+                    .firstname(fullDetailsDto.getFirstname())
+                    .lastname(fullDetailsDto.getLastname())
+                    .build();
+
             contactRepository.save(contactDbo);
 
             if (fullDetailsDto.getPhoneNumber() != null && fullDetailsDto.getNumberType() != null) {
-                PhonenumberDbo phonenumberDbo = new PhonenumberDbo();
-                phonenumberDbo.setPhoneNumber(fullDetailsDto.getPhoneNumber());
-                phonenumberDbo.setNumberType(fullDetailsDto.getNumberType());
-                phonenumberDbo.setContact_id(contactDbo.getId());
+
+                PhonenumberDbo phonenumberDbo = PhonenumberDbo.builder()
+                        .phoneNumber(fullDetailsDto.getPhoneNumber())
+                        .numberType(fullDetailsDto.getNumberType())
+                        .contact_id(contactDbo.getId())
+                        .build();
+
                 phonenumberRepository.save(phonenumberDbo);
             }
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
         }
         return fullDetailsDto;
     }
@@ -102,16 +110,20 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public FullDetailsDto addNumberToExistingContact(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method addNumberToExistingContact");
+
         try {
             if (contactRepository.existsById(fullDetailsDto.getId())) {
-                PhonenumberDbo phonenumberDbo = new PhonenumberDbo();
-                phonenumberDbo.setPhoneNumber(fullDetailsDto.getPhoneNumber());
-                phonenumberDbo.setNumberType(fullDetailsDto.getNumberType());
-                phonenumberDbo.setContact_id(fullDetailsDto.getId());
+
+                PhonenumberDbo phonenumberDbo = PhonenumberDbo.builder()
+                        .phoneNumber(fullDetailsDto.getPhoneNumber())
+                        .numberType(fullDetailsDto.getNumberType())
+                        .contact_id(fullDetailsDto.getId())
+                        .build();
+
                 phonenumberRepository.save(phonenumberDbo);
             }
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(e);
         }
 
         return fullDetailsDto;
@@ -124,7 +136,7 @@ public class ContactServiceImpl implements ContactService {
             contactRepository.deleteAll();
             phonenumberRepository.deleteAll();
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -137,7 +149,7 @@ public class ContactServiceImpl implements ContactService {
             }
             contactRepository.deleteById(id);
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -150,7 +162,7 @@ public class ContactServiceImpl implements ContactService {
             }
             phonenumberRepository.deleteById(id);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -167,7 +179,7 @@ public class ContactServiceImpl implements ContactService {
             contactRepository.save(contactDbo.get());
             return contactDbo;
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -184,7 +196,7 @@ public class ContactServiceImpl implements ContactService {
             phonenumberRepository.save(phonenumberDbo.get());
             return phonenumberDbo;
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(e);
         }
     }
 }

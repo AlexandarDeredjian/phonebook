@@ -1,9 +1,7 @@
 package com.blubito.phonebook.dbo;
 
 import com.blubito.phonebook.types.NumberType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,7 +9,9 @@ import javax.persistence.*;
 @Table(name = "phonenumber")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class PhonenumberDbo {
 
     @Id
@@ -28,9 +28,4 @@ public class PhonenumberDbo {
     @Column(name = "contact_id")
     private Integer contact_id;
 
-    public PhonenumberDbo(String phonenumber, NumberType numberType) {
-        this.phoneNumber = phoneNumber;
-        this.numberType = numberType;
-        this.contact_id = null;
-    }
 }
