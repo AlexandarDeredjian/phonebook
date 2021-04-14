@@ -5,8 +5,8 @@ import com.blubito.phonebook.dbo.ContactDbo;
 import com.blubito.phonebook.dbo.PhonenumberDbo;
 import com.blubito.phonebook.dto.FullDetailsDto;
 import com.blubito.phonebook.exception.ArgumentNotFoundException;
-import com.blubito.phonebook.exception.MissingInputException;
 import com.blubito.phonebook.exception.DuplicatePhoneNumberException;
+import com.blubito.phonebook.exception.MissingInputException;
 import com.blubito.phonebook.repository.ContactRepository;
 import com.blubito.phonebook.repository.PhonenumberRepository;
 import org.slf4j.Logger;
@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static com.blubito.phonebook.exception.ExceptionMessages.*;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -53,7 +55,7 @@ public class ContactServiceImpl implements ContactService {
         try {
             Optional<ContactDbo> optional = contactRepository.findById(id);
             if (optional.isEmpty()) {
-                throw new ArgumentNotFoundException();
+                throw new ArgumentNotFoundException(NO_CONTACT_WITH_THIS_ID);
             }
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException(e);
@@ -67,7 +69,7 @@ public class ContactServiceImpl implements ContactService {
         try {
             Optional<PhonenumberDbo> optional = phonenumberRepository.findById(id);
             if (optional.isEmpty()) {
-                throw new ArgumentNotFoundException();
+                throw new ArgumentNotFoundException(NO_PHONE_NUMBER_WITH_THIS_ID);
             }
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException(e);
@@ -80,13 +82,13 @@ public class ContactServiceImpl implements ContactService {
         log.info("Invoked method createContact");
 
         if(phonenumberRepository.findAllPhoneNumbers().contains(fullDetailsDto.getPhoneNumber())){
-            throw new DuplicatePhoneNumberException();
+           throw new DuplicatePhoneNumberException(THIS_NUMBER_ALREADY_EXISTS);
         }
 
         try {
 
             if (fullDetailsDto.getFirstname() == null || fullDetailsDto.getLastname() == null) {
-                throw new MissingInputException();
+                throw new MissingInputException(MANDATORY_FIELD_MISSING);
             }
 
             ContactDbo contactDbo = ContactDbo.builder()
@@ -157,7 +159,7 @@ public class ContactServiceImpl implements ContactService {
         log.info("Invoked method deleteContactById");
         try {
             if (contactRepository.existsById(id)) {
-                throw new ArgumentNotFoundException();
+                throw new ArgumentNotFoundException(NO_CONTACT_WITH_THIS_ID);
             }
             contactRepository.deleteById(id);
         } catch (IllegalArgumentException e) {
@@ -170,7 +172,7 @@ public class ContactServiceImpl implements ContactService {
         log.info("Invoked method deleteNumberById");
         try {
             if (phonenumberRepository.existsById(id)) {
-                throw new ArgumentNotFoundException();
+                throw new ArgumentNotFoundException(NO_PHONE_NUMBER_WITH_THIS_ID);
             }
             phonenumberRepository.deleteById(id);
         } catch (IllegalArgumentException e) {
@@ -183,7 +185,7 @@ public class ContactServiceImpl implements ContactService {
         log.info("Invoked method updateName");
         try {
             if (!contactRepository.existsById(fullDetailsDto.getId())) {
-                throw new ArgumentNotFoundException();
+                throw new ArgumentNotFoundException(NO_CONTACT_WITH_THIS_ID);
             }
             Optional<ContactDbo> contactDbo = contactRepository.findById(fullDetailsDto.getId());
             contactDbo.get().setFirstname(fullDetailsDto.getFirstname());
@@ -200,7 +202,7 @@ public class ContactServiceImpl implements ContactService {
         log.info("Invoked method updateNumber");
         try {
             if (!phonenumberRepository.existsById(fullDetailsDto.getId())) {
-                throw new ArgumentNotFoundException();
+                throw new ArgumentNotFoundException(NO_PHONE_NUMBER_WITH_THIS_ID);
             }
             Optional<PhonenumberDbo> phonenumberDbo = phonenumberRepository.findById(fullDetailsDto.getId());
             phonenumberDbo.get().setPhoneNumber(fullDetailsDto.getPhoneNumber());
