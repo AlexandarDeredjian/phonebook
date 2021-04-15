@@ -3,7 +3,9 @@ package com.blubito.phonebook.service;
 import com.blubito.phonebook.controller.ContactController;
 import com.blubito.phonebook.dbo.PhoneNumberDbo;
 import com.blubito.phonebook.dto.FullDetailsDto;
+import com.blubito.phonebook.dto.PhoneNumberDto;
 import com.blubito.phonebook.exception.ArgumentNotFoundException;
+import com.blubito.phonebook.exception.DuplicatePhoneNumberException;
 import com.blubito.phonebook.repository.ContactRepository;
 import com.blubito.phonebook.repository.PhoneNumberRepository;
 import org.slf4j.Logger;
@@ -11,9 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.blubito.phonebook.exception.ExceptionMessages.NO_PHONE_NUMBER_WITH_THIS_ID;
+import static com.blubito.phonebook.exception.ExceptionMessages.THIS_NUMBER_ALREADY_EXISTS;
 
 @Service
 public class PhoneNumberServiceImpl implements PhoneNumberService{
@@ -55,6 +60,10 @@ public class PhoneNumberServiceImpl implements PhoneNumberService{
     public FullDetailsDto addNumberToExistingContact(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method addNumberToExistingContact");
 
+        if(phonenumberRepository.findAllPhoneNumbers().contains(fullDetailsDto.getPhoneNumber())){
+            throw new DuplicatePhoneNumberException(THIS_NUMBER_ALREADY_EXISTS);
+        }
+
         Optional<PhoneNumberDbo> byId = phonenumberRepository.findById(fullDetailsDto.getId());
         if(byId.isPresent() && byId.get().getNumberType().equals(fullDetailsDto.getNumberType())){
             byId.get().setPhoneNumber(fullDetailsDto.getPhoneNumber());
@@ -84,7 +93,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService{
     public void deleteNumberById(Integer id) {
         log.info("Invoked method deleteNumberById");
         try {
-            if (phonenumberRepository.existsById(id)) {
+            if(!phonenumberRepository.existsById(id)) {
                 throw new ArgumentNotFoundException(NO_PHONE_NUMBER_WITH_THIS_ID);
             }
             phonenumberRepository.deleteById(id);
@@ -108,4 +117,10 @@ public class PhoneNumberServiceImpl implements PhoneNumberService{
             throw new IllegalArgumentException(e);
         }
     }
+
+    @Override
+    public List<PhoneNumberDbo> findPhoneNumbersByContactId(int id) {
+        return phonenumberRepository.findPhoneNumbersByContactId(id);
+    }
+
 }

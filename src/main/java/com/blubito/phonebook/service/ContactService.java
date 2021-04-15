@@ -3,6 +3,7 @@ package com.blubito.phonebook.service;
 import com.blubito.phonebook.dbo.ContactDbo;
 import com.blubito.phonebook.dto.FullDetailsDto;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ContactService {

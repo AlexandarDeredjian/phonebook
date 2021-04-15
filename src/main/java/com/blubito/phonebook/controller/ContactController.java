@@ -1,11 +1,17 @@
 package com.blubito.phonebook.controller;
 
 import com.blubito.phonebook.dbo.ContactDbo;
+import com.blubito.phonebook.dbo.PhoneNumberDbo;
+import com.blubito.phonebook.dto.CombinedDetailsDto;
 import com.blubito.phonebook.dto.FullDetailsDto;
+import com.blubito.phonebook.dto.PhoneNumberDto;
 import com.blubito.phonebook.service.ContactService;
+import com.blubito.phonebook.service.PhoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -14,6 +20,9 @@ public class ContactController {
 
     @Autowired
     ContactService contactService;
+
+    @Autowired
+    PhoneNumberService phoneNumberService;
 
     @GetMapping("/allContacts")
     public Iterable<ContactDbo> getAllContacts() {
@@ -44,5 +53,7 @@ public class ContactController {
     public Optional<ContactDbo> updateName(@RequestBody FullDetailsDto fullDetailsDto) {
         return contactService.updateName(fullDetailsDto);
     }
+
+
 
 }
