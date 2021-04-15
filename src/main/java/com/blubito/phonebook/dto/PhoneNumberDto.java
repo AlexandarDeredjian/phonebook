@@ -1,13 +1,13 @@
 package com.blubito.phonebook.dto;
 
 import com.blubito.phonebook.types.NumberType;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PhoneNumberDto {
 
     private Integer id;

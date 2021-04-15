@@ -54,6 +54,4 @@ public class ContactController {
         return contactService.updateName(fullDetailsDto);
     }
 
-
-
 }

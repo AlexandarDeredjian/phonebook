@@ -10,17 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static com.blubito.phonebook.mapper.PhoneNumberDtoMapper.mapToPhoneNumberDto;
-
 @RestController
 @RequestMapping("/api")
 public class PhoneNumberController {
 
     @Autowired
     PhoneNumberService phoneNumberService;
-
-    @Autowired
-    ContactService contactService;
 
     @GetMapping("/allNumbers")
     public Iterable<PhoneNumberDbo> getAllNumbers() {
@@ -50,12 +45,7 @@ public class PhoneNumberController {
 
     @GetMapping("/findPhoneNumbersByContactId/{id}")
     public CombinedDetailsDto findPhoneNumbersByContactId(@PathVariable Integer id) {
-        CombinedDetailsDto combinedDetailsDto = new CombinedDetailsDto();
-        combinedDetailsDto.setPhoneNumbers(mapToPhoneNumberDto(phoneNumberService.findPhoneNumbersByContactId(id)));
-        combinedDetailsDto.setContactId(contactService.findContactById(id).getId());
-        combinedDetailsDto.setFirstname(contactService.findContactById(id).getFirstname());
-        combinedDetailsDto.setLastname(contactService.findContactById(id).getLastname());
-        return combinedDetailsDto;
+        return phoneNumberService.findPhoneNumbersByContactId(id);
     }
 
 }

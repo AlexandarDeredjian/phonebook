@@ -1,6 +1,7 @@
 package com.blubito.phonebook.service;
 
 import com.blubito.phonebook.dbo.PhoneNumberDbo;
+import com.blubito.phonebook.dto.CombinedDetailsDto;
 import com.blubito.phonebook.dto.FullDetailsDto;
 import com.blubito.phonebook.dto.PhoneNumberDto;
 
@@ -19,5 +20,5 @@ public interface PhoneNumberService {
 
     Optional<PhoneNumberDbo> updateNumber(FullDetailsDto fullDetailsDto);
 
-    List<PhoneNumberDbo> findPhoneNumbersByContactId(int id);
+    CombinedDetailsDto findPhoneNumbersByContactId(int id);
 }

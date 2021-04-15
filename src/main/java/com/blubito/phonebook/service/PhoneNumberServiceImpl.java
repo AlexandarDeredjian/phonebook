@@ -2,6 +2,7 @@ package com.blubito.phonebook.service;
 
 import com.blubito.phonebook.controller.ContactController;
 import com.blubito.phonebook.dbo.PhoneNumberDbo;
+import com.blubito.phonebook.dto.CombinedDetailsDto;
 import com.blubito.phonebook.dto.FullDetailsDto;
 import com.blubito.phonebook.dto.PhoneNumberDto;
 import com.blubito.phonebook.exception.ArgumentNotFoundException;
@@ -19,11 +20,15 @@ import java.util.Optional;
 
 import static com.blubito.phonebook.exception.ExceptionMessages.NO_PHONE_NUMBER_WITH_THIS_ID;
 import static com.blubito.phonebook.exception.ExceptionMessages.THIS_NUMBER_ALREADY_EXISTS;
+import static com.blubito.phonebook.mapper.PhoneNumberDtoMapper.mapToPhoneNumberDto;
 
 @Service
-public class PhoneNumberServiceImpl implements PhoneNumberService{
+public class PhoneNumberServiceImpl implements PhoneNumberService {
 
     private static final Logger log = LoggerFactory.getLogger(ContactController.class);
+
+    @Autowired
+    ContactService contactService;
 
     @Autowired
     ContactRepository contactRepository;
@@ -60,12 +65,12 @@ public class PhoneNumberServiceImpl implements PhoneNumberService{
     public FullDetailsDto addNumberToExistingContact(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method addNumberToExistingContact");
 
-        if(phonenumberRepository.findAllPhoneNumbers().contains(fullDetailsDto.getPhoneNumber())){
+        if (phonenumberRepository.findAllPhoneNumbers().contains(fullDetailsDto.getPhoneNumber())) {
             throw new DuplicatePhoneNumberException(THIS_NUMBER_ALREADY_EXISTS);
         }
 
         Optional<PhoneNumberDbo> byId = phonenumberRepository.findById(fullDetailsDto.getId());
-        if(byId.isPresent() && byId.get().getNumberType().equals(fullDetailsDto.getNumberType())){
+        if (byId.isPresent() && byId.get().getNumberType().equals(fullDetailsDto.getNumberType())) {
             byId.get().setPhoneNumber(fullDetailsDto.getPhoneNumber());
             phonenumberRepository.save(byId.get());
             return fullDetailsDto;
@@ -93,7 +98,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService{
     public void deleteNumberById(Integer id) {
         log.info("Invoked method deleteNumberById");
         try {
-            if(!phonenumberRepository.existsById(id)) {
+            if (!phonenumberRepository.existsById(id)) {
                 throw new ArgumentNotFoundException(NO_PHONE_NUMBER_WITH_THIS_ID);
             }
             phonenumberRepository.deleteById(id);
@@ -101,6 +106,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService{
             throw new IllegalArgumentException(e);
         }
     }
+
     @Override
     public Optional<PhoneNumberDbo> updateNumber(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method updateNumber");
@@ -119,8 +125,15 @@ public class PhoneNumberServiceImpl implements PhoneNumberService{
     }
 
     @Override
-    public List<PhoneNumberDbo> findPhoneNumbersByContactId(int id) {
-        return phonenumberRepository.findPhoneNumbersByContactId(id);
+    public CombinedDetailsDto findPhoneNumbersByContactId(int id) {
+        log.info("Invoked method findPhoneNumbersByContactId");
+
+        return CombinedDetailsDto.builder()
+                .phoneNumbers(mapToPhoneNumberDto(phonenumberRepository.findPhoneNumbersByContactId(id)))
+                .contactId(contactService.findContactById(id).getId())
+                .firstname(contactService.findContactById(id).getFirstname())
+                .lastname(contactService.findContactById(id).getLastname())
+                .build();
     }
 
 }

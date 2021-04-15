@@ -12,13 +12,13 @@ public class PhoneNumberDtoMapper {
         List<PhoneNumberDto> dtoList = new ArrayList<>();
 
         for (PhoneNumberDbo phoneNumberDbo : dboList){
-            PhoneNumberDto phoneNumberDto = new PhoneNumberDto();
-            phoneNumberDto.setId(phoneNumberDbo.getId());
-            phoneNumberDto.setNumberType(phoneNumberDbo.getNumberType());
-            phoneNumberDto.setPhoneNumber(phoneNumberDbo.getPhoneNumber());
+            PhoneNumberDto phoneNumberDto = PhoneNumberDto.builder()
+                    .id(phoneNumberDbo.getId())
+                    .numberType(phoneNumberDbo.getNumberType())
+                    .phoneNumber(phoneNumberDbo.getPhoneNumber())
+                    .build();
             dtoList.add(phoneNumberDto);
         }
-
         return dtoList;
     }
 }
