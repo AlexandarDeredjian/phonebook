@@ -16,7 +16,9 @@ public class DboMapper {
                 .phoneNumber(fullDetailsDto.getPhoneNumber())
                 .build();
 
-        phoneNumberDbos.add(phoneNumberDbo);
+        if(phoneNumberDbo.getNumberType()!=null || phoneNumberDbo.getPhoneNumber()!=null){
+            phoneNumberDbos.add(phoneNumberDbo);
+        }
 
         ContactDbo contactDbo = ContactDbo.builder()
                 .id(fullDetailsDto.getId())

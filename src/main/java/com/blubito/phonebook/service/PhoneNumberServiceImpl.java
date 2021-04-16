@@ -1,6 +1,7 @@
 package com.blubito.phonebook.service;
 
 import com.blubito.phonebook.controller.ContactController;
+import com.blubito.phonebook.dbo.ContactDbo;
 import com.blubito.phonebook.dbo.PhoneNumberDbo;
 import com.blubito.phonebook.dto.FullDetailsDto;
 import com.blubito.phonebook.repository.ContactRepository;
@@ -43,9 +44,21 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     @Override
     public FullDetailsDto addNumberToExistingContact(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method addNumberToExistingContact");
-        Set<PhoneNumberDbo> phoneNumberDbos = new HashSet<>();
-        phoneNumberDbos = all();
-        contactRepository.save(mapContactDbo(fullDetailsDto, phoneNumberDbos));
+//        Set<PhoneNumberDbo> phoneNumberDbos = new HashSet<>();
+//        phoneNumberDbos = all();
+//        contactRepository.save(mapContactDbo(fullDetailsDto, phoneNumberDbos));
+
+        Optional<ContactDbo> byId = contactRepository.findById(fullDetailsDto.getId());
+        Set<PhoneNumberDbo> phoneNumbers = byId.get().getPhoneNumbers();
+
+        phoneNumbers.add(PhoneNumberDbo.builder()
+                .numberType(fullDetailsDto.getNumberType())
+                .phoneNumber(fullDetailsDto.getPhoneNumber())
+                .build());
+
+        byId.get().setPhoneNumbers(phoneNumbers);
+        contactRepository.save(byId.get());
+
         return fullDetailsDto;
     }
 
@@ -58,9 +71,10 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     @Override
     public void updateNumber(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method updateNumber");
-        Set<PhoneNumberDbo> phoneNumberDbos = new HashSet<>();
-        phoneNumberDbos = all();
-        mapContactDbo(fullDetailsDto, phoneNumberDbos);
+        PhoneNumberDbo phoneNumberDbo = phonenumberRepository.findById(fullDetailsDto.getId()).get();
+        phoneNumberDbo.setNumberType(fullDetailsDto.getNumberType());
+        phoneNumberDbo.setPhoneNumber(fullDetailsDto.getPhoneNumber());
+        phonenumberRepository.save(phoneNumberDbo);
     }
 
     @Override
