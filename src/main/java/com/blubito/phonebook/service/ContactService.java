@@ -18,5 +18,5 @@ public interface ContactService {
 
     void deleteContactById(Integer id);
 
-    Optional<ContactDbo> updateName(FullDetailsDto fullDetailsDto);
+    void updateName(FullDetailsDto fullDetailsDto);
 }

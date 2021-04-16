@@ -7,6 +7,7 @@ import com.blubito.phonebook.dto.PhoneNumberDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface PhoneNumberService {
 
@@ -18,7 +19,7 @@ public interface PhoneNumberService {
 
     void deleteNumberById(Integer id);
 
-    Optional<PhoneNumberDbo> updateNumber(FullDetailsDto fullDetailsDto);
+    void updateNumber(FullDetailsDto fullDetailsDto);
 
-    CombinedDetailsDto findPhoneNumbersByContactId(int id);
+    Set<PhoneNumberDbo> all();
 }

@@ -50,8 +50,8 @@ public class ContactController {
     }
 
     @PutMapping("/updateName")
-    public Optional<ContactDbo> updateName(@RequestBody FullDetailsDto fullDetailsDto) {
-        return contactService.updateName(fullDetailsDto);
+    public void updateName(@RequestBody FullDetailsDto fullDetailsDto) {
+        contactService.updateName(fullDetailsDto);
     }
 
 }

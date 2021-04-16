@@ -1,9 +1,12 @@
 package com.blubito.phonebook.dbo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -28,9 +31,10 @@ public class ContactDbo {
     @Column(name = "lastname")
     private String lastname;
 
-//    @OneToMany(cascade=CascadeType.ALL)
-//    @JoinColumn(name="contact_id")
-//    private Set<PhoneNumberDbo> phoneNumbers;
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="contact_id")
+    @JsonManagedReference
+    private Set<PhoneNumberDbo> phoneNumbers;
 
 
 }

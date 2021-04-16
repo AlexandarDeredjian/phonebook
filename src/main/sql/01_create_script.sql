@@ -1,17 +1,22 @@
-CREATE TABLE contact(
-   contact_id SERIAL PRIMARY KEY,
-   firstname VARCHAR (50) NOT NULL,
-	lastname VARCHAR (50) NOT NULL
-);
 
+    create table contact (
+       contact_id  serial not null,
+        firstname varchar(255),
+        lastname varchar(255),
+        primary key (contact_id)
+    )
 
-CREATE TABLE phonenumber(
-   phonenumber_id SERIAL PRIMARY KEY,
-	phonenumber VARCHAR (50),
-   number_type int4 NOT NULL,
-	contact_id INT NOT NULL,
-	CONSTRAINT contact_id
-      FOREIGN KEY(contact_id)
-	  REFERENCES contact(contact_id)
-		ON DELETE CASCADE
-);
+    
+    create table phonenumber (
+       phonenumber_id  serial not null,
+        contact_id int4,
+        number_type int4,
+        phonenumber varchar(255),
+        primary key (phonenumber_id)
+    )
+
+    
+    alter table phonenumber 
+       add constraint FKmhlfyfug8dwdqsqau6xn3s809 
+       foreign key (contact_id) 
+       references contact

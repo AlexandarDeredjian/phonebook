@@ -39,13 +39,8 @@ public class PhoneNumberController {
     }
 
     @PutMapping("/updateNumber")
-    public Optional<PhoneNumberDbo> updateNumber(@RequestBody FullDetailsDto fullDetailsDto) {
-        return phoneNumberService.updateNumber(fullDetailsDto);
-    }
-
-    @GetMapping("/findPhoneNumbersByContactId/{id}")
-    public CombinedDetailsDto findPhoneNumbersByContactId(@PathVariable Integer id) {
-        return phoneNumberService.findPhoneNumbersByContactId(id);
+    public void updateNumber(@RequestBody FullDetailsDto fullDetailsDto) {
+        phoneNumberService.updateNumber(fullDetailsDto);
     }
 
 }
