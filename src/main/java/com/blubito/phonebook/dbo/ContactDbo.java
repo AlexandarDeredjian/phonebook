@@ -3,6 +3,8 @@ package com.blubito.phonebook.dbo;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Entity
 @Table(name ="contact")
@@ -18,10 +20,17 @@ public class ContactDbo {
     @Column(name = "contact_id")
     private Integer id;
 
+    @NotEmpty
     @Column(name = "firstname")
     private String firstname;
 
+    @NotEmpty
     @Column(name = "lastname")
     private String lastname;
+
+//    @OneToMany(cascade=CascadeType.ALL)
+//    @JoinColumn(name="contact_id")
+//    private Set<PhoneNumberDbo> phoneNumbers;
+
 
 }
