@@ -1,11 +1,8 @@
 package com.blubito.phonebook.service;
 
 import com.blubito.phonebook.dbo.PhoneNumberDbo;
-import com.blubito.phonebook.dto.CombinedDetailsDto;
 import com.blubito.phonebook.dto.FullDetailsDto;
-import com.blubito.phonebook.dto.PhoneNumberDto;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 

@@ -11,11 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import static com.blubito.phonebook.mapper.DboMapper.mapContactDbo;
 
 @Service
 public class PhoneNumberServiceImpl implements PhoneNumberService {
@@ -40,13 +37,9 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         return phonenumberRepository.findById(id);
     }
 
-
     @Override
     public FullDetailsDto addNumberToExistingContact(FullDetailsDto fullDetailsDto) {
         log.info("Invoked method addNumberToExistingContact");
-//        Set<PhoneNumberDbo> phoneNumberDbos = new HashSet<>();
-//        phoneNumberDbos = all();
-//        contactRepository.save(mapContactDbo(fullDetailsDto, phoneNumberDbos));
 
         Optional<ContactDbo> byId = contactRepository.findById(fullDetailsDto.getId());
         Set<PhoneNumberDbo> phoneNumbers = byId.get().getPhoneNumbers();
@@ -78,7 +71,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     }
 
     @Override
-    public Set<PhoneNumberDbo> all(){
+    public Set<PhoneNumberDbo> all() {
         return phonenumberRepository.all();
-    };
+    }
 }

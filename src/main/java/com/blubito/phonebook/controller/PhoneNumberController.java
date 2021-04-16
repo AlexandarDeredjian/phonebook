@@ -1,9 +1,7 @@
 package com.blubito.phonebook.controller;
 
 import com.blubito.phonebook.dbo.PhoneNumberDbo;
-import com.blubito.phonebook.dto.CombinedDetailsDto;
 import com.blubito.phonebook.dto.FullDetailsDto;
-import com.blubito.phonebook.service.ContactService;
 import com.blubito.phonebook.service.PhoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
